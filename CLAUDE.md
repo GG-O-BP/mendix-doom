@@ -1,11 +1,11 @@
 # MendixDoom
 
-A project for developing Mendix Pluggable Widgets with Gleam. Widgets are implemented using only Gleam + [glendix](https://hexdocs.pm/glendix/) bindings, without JSX.
+Embeds the original DOOM (1993) shareware as a playable Mendix widget via js-dos DOSBox emulator. Built with Gleam + [glendix](https://hexdocs.pm/glendix/) bindings, without JSX.
 
 ## Commands
 
 ```bash
-gleam run -m glendix/install      # Install dependencies (Gleam deps + npm + bindings.json code generation)
+gleam run -m glendix/install      # Install dependencies (Gleam deps + npm)
 gleam run -m glendix/build        # Production build (.mpk output)
 gleam run -m glendix/dev          # Dev server (HMR, port 3000)
 gleam run -m glendix/start        # Link with Mendix test project
@@ -16,8 +16,6 @@ gleam run -m glendix/marketplace  # Search/download Marketplace widgets
 gleam test                        # Run tests
 gleam format                      # Format code
 ```
-
-If you add external React packages to bindings.json, install the npm package manually before running `glendix/install`.
 
 ## Hard Rules
 
@@ -40,13 +38,15 @@ IMPORTANT: Breaking these rules will break the build or compromise the architect
 
 Widget entry point signature: `pub fn widget(props: JsProps) -> ReactElement` — identical to a React functional component.
 
-- `src/mendix_doom.gleam` — Main widget (called by Mendix runtime)
+- `src/mendix_doom.gleam` — Main widget entry point (calls `game.render()`)
 - `src/editor_config.gleam` — Studio Pro property panel configuration
-- `src/editor_preview.gleam` — Studio Pro design view preview
-- `src/components/` — Shared components
-- `src/MendixDoom.xml` — Widget property definitions. Adding `<property>` triggers automatic type generation by the build tool
+- `src/editor_preview.gleam` — Studio Pro design view preview (static DOOM placeholder)
+- `src/components/game.gleam` — Core DOOM game component (js-dos integration, DOSBox emulation)
+- `src/Doom.xml` — Widget property definitions. Adding `<property>` triggers automatic type generation by the build tool
 - `src/package.xml` — Mendix package manifest
-- `bindings.json` — External React component binding configuration
+- `src/assets/doom.jsdos` — Embedded DOOM shareware bundle for js-dos
+- `src/ui/Doom.css` — Widget styling
+- `rollup.config.mjs` — Custom Rollup config (copies doom.jsdos asset to build output)
 - `widgets/` — .mpk widget file bindings (used via `glendix/widget`)
 
 ## Build Pipeline
@@ -55,14 +55,17 @@ Widget entry point signature: `pub fn widget(props: JsProps) -> ReactElement` �
 src/*.gleam → gleam build → build/dev/javascript/**/*.mjs → Bridge JS (auto-generated) → Rollup → dist/**/*.mpk
 ```
 
+Rollup also copies `src/assets/doom.jsdos` into the output so the DOOM bundle is included in the `.mpk`.
+
 ## Mendix Widget Conventions
 
-- Widget ID: `mendix.mendixdoom.MendixDoom`
-- `packagePath: "mendix"` in `package.json` determines the deployment path
-- `needsEntityContext="true"` → Requires Mendix data context
-- `offlineCapable="true"` → Offline support
+- Widget ID: `ggobp.doom.Doom`
+- `packagePath: "ggobp"` in `package.json` determines the deployment path
+- `needsEntityContext="false"` → Does not require Mendix data context
+- `offlineCapable="false"` → Requires network (js-dos CDN)
 - `.mpk` output: `dist/` directory
 - Test project: `./tests/testProject`
+- DOOM bundle served at: `/widgets/ggobp/doom/doom.jsdos`
 
 ## Key Concepts
 
@@ -71,6 +74,7 @@ src/*.gleam → gleam build → build/dev/javascript/**/*.mjs → Bridge JS (aut
 - JS `undefined` ↔ Gleam `Option` conversion is handled automatically at the FFI boundary
 - HTML attributes use the Attribute list API: `[attribute.class("x"), event.on_click(handler)]`
 - Gleam tuples `#(a, b)` = JS `[a, b]` — directly compatible with `useState` return values
+- js-dos v8 is loaded dynamically from CDN (`https://v8.js-dos.com/latest/`)
 
 ## Reference Docs
 

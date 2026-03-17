@@ -1,0 +1,11 @@
+.mendix-doom-container {
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.mendix-doom-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

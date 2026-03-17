@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+.yarn/
+.pnp.*
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+bun.lock
+
+# Package manager cache/config
+.npmrc
+.yarnrc
+.yarnrc.yml
+.pnpmfile.cjs
+.npmignore
+
+# Gleam compilation output
+build/
+
+# Mendix widget build output
+dist/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.launch
+
+# Mendix test project
+tests/testProject/
+
+# Test artifacts
+coverage/
+**/e2e/diffs/
+**/screenshot/
+**/screenshot-results/
+**/artifacts/
+
+# Auto-generated bridge files (created/deleted by glendix at build time)
+src/*.js
+
+# AI
+.claude/
+
+# Mendix marketplace cache/config
+.marketplace-cache/

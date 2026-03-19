@@ -1,7 +1,7 @@
 {
   "name": "doom",
   "widgetName": "Doom",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Embeds the original DOOM (1993) shareware as a playable Mendix widget via js-dos DOSBox emulator",
   "copyright": "© 2026 GG-O-BP (https://github.com/GG-O-BP)",
   "author": "GG-O-BP (https://github.com/GG-O-BP)",

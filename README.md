@@ -49,6 +49,17 @@ src/
     doom.jsdos             # DOOM shareware bundle (id Software)
 ```
 
+## Viewport & Fullscreen
+
+You can configure the game viewport size in Studio Pro's property panel:
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| Width | `640px` | Viewport width (e.g. `640px`, `100%`, `80vw`) |
+| Height | `400px` | Viewport height (e.g. `400px`, `100vh`, `600px`) |
+
+During gameplay, click the **Fullscreen** button (top-right corner) to go fullscreen. Press **Escape** or click **Exit Fullscreen** to return to normal size.
+
 ## Other handy commands
 
 ```bash
